@@ -1,0 +1,77 @@
+﻿@model Oprosnik.Models.Template
+
+@Scripts.Render(Url.Content("~/bundles/air-datepickerJS"))
+@Styles.Render(Url.Content("~/Content/air-datepickerCSS"))
+@Scripts.Render(Url.Content("~/bundles/TeacherClick"))
+
+<div class="modal-header">
+    <h5 class="modal-title" id="staticBackdropLabel">Создание нового опроса</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+</div>
+@using (Html.BeginForm("AddTemplate", "Opros", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    <div class="modal-body text-center">
+
+
+        @Html.DropDownList("Kurs_name", ViewBag.Kurses as SelectList, htmlAttributes: new { @class = "form-select form-select-sm mb-3 text-truncate" })
+
+
+        <div class="hstack gap-2  flex-wrap  mb-3 m-xl-1 ">
+
+            <label>Даты с</label>
+
+            <input type="text" class="datepicker-here text-center border-0 border-bottom border-secondary col-sm-2 col-3 col-xl-1" data-auto-close="true" name="sdate" readonly value="" />
+
+            <label>по</label>
+            <input type="text" class="datepicker-here text-center border-0 border-bottom border-secondary col-sm-2 col-3 col-xl-1" data-auto-close="true" name="edate" readonly value="" />
+
+            <div class="form-check form-switch d-flex justify-content-center ms-3 ">
+                <input class="form-check-input" type="checkbox" role="checkbox" id="flexSwitchCheckChecked" value="true" name="status" )>
+                <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Опубликовать</label>
+                <input type="hidden" value="false" name="status" />
+            </div>
+
+
+        </div>
+        <h6 class="mt-4 mb-2 text-start w-100">Список преподавателей:</h6>
+        <div class="hstack ms-2 align-items-start" style="height: 600px;">
+            
+             
+
+            <ul class="list-group border border-secondary  align-items-start h-100 col-3  overflow-auto ">
+                @for (int i = 0; i < ViewBag.Teachers.Count; i++)
+                {
+                    <li class="list-group-item text-nowrap user-select-none border-0">
+                        <input class="form-check-input me-1 teacher" type="checkbox" value="@ViewBag.Teachers[i]"  name="teachers[@i]" id="@ViewBag.Teachers[i] @i">
+                        <label for="@ViewBag.Teachers[i] @i" >@ViewBag.Teachers[i] </label> 
+                    </li>
+                }
+
+            </ul>
+
+             
+
+
+            <label class="ms-5  text-start user-select-none text-muted" id="spisok">
+
+
+            </label>
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-success ms-2">Создать</button>
+    </div>
+
+}

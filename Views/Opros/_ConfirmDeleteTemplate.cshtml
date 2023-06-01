@@ -1,0 +1,18 @@
+﻿@model int
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="staticBackdropLabel">Внимание!</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+</div>
+
+
+<div class="modal-body text-center">
+    <p>
+        При удалении опроса все, связанные с этим опросом анкеты удался тоже! Продолжить удаление?
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>    
+    @Html.ActionLink("Удалить", "DeleteConfirmed", new { id_template = Model }, new { @class = "btn btn-danger ms-2" })
+</div>

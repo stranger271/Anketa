@@ -1,0 +1,712 @@
+﻿@model  Oprosnik.Models.AnketaViewModel
+    
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .header-h1 {
+        position: relative;
+        margin-bottom: .5rem;
+    }
+
+        .header-h1 h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            padding-left: 3rem;
+            color: black;
+        }
+
+            .header-h1 h1::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 2.25rem;
+                height: 2.25rem;
+                background: black;
+            }
+
+            .header-h1 h1::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 2rem;
+                width: 100%;
+                height: .25rem;
+                background-color: black;
+            }
+</style>
+
+
+
+@*Общий фон*@
+<main class="container-fluid anketa  ">
+
+
+    @*Лист опросника*@
+    <div class="container  border border-dark  border-1 bg-body my-5  rounded-2 p-4 user-select-none">
+
+
+
+        @*Кнопка вернуться назад*@
+        <div class="row justify-content-start row-cols-auto  ">
+            @Html.ActionLink("Назад", "Index", new { status = true }, new { @class = "btn btn-outline-success" })
+        </div>
+
+
+
+        @*Хедер название курса и даты*@
+        <div class="row text-center mb-5 ">
+            <h1>@ViewBag.Template.Kurs_name</h1>
+            <span class="py-0 text-muted fst-italic align-self-end">обучение с @ViewBag.Template.Sdate.ToString("d") по  @ViewBag.Template.Edate.ToString("d")</span>
+        </div>
+
+
+        @*Форма для заполнения  , was-validated , new { @class = "needs-validation", novalidate = "novalidate" } валидация на стороне клиента только через браузер *@
+
+        @using (Html.BeginForm("Anketa", "Opros", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="Id_template" value=@ViewBag.Template.Id_template />
+
+            <div class="header-h1  mt-4">
+                <h1>Оценка условий предоставления услуги</h1>
+            </div>
+
+            @*---------------------------------------P1----------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>1</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Правильность выбранного объема курса (оптимальность срока обучения)</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P1" id="btnradioP1 @i" autocomplete="off" value="@i" required  >
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP1 @i">@i</label>
+                        }
+                        @*
+                                            Временно выключено сообщение о валидации
+                        <div class="invalid-feedback">
+                            Пожалуйста, выберите балл
+                        </div>
+                        *@
+
+
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P2---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>2</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Устраивает ли Вас форма обучения?</p>
+                    <div class="hstack   pb-2  ">
+                        <input type="radio" class="btn-check" name="P2" id="btnradioP2Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP2Y">Да</label>
+                        <input type="radio" class="btn-check" name="P2" id="btnradioP2N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP2N">Нет</label>
+
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P3---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>3</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Комфортность во время пребывания в помещениях МОРУЦ (интерьер, гaрдероб, места для ожидания, учебные кабинеты и т.п.)</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P3" id="btnradioP3 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP3 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P4---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto ">
+                    <h1>4</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Удовлетворенность качеством организации курсов (расписание, организация питания, оказание психолого-педагогической, медицинской помощи и т.п.)</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P4" id="btnradioP4 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP4 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P5---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>5</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Обеспеченность учебного процесса мультимедиа и компьютерной техникой, программным обеспеченьем, тренажерами, учебно-методическими и раздаточными материалами</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P5" id="btnradioP5 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP5 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="header-h1 mt-4 ">
+                <h1>Оценка содержания программы</h1>
+            </div>
+
+
+            @*----------------------------------------P6---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>6</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>На сколько оправдала учебная программа Ваши ожидания?</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P6" id="btnradioP6 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP6 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P7---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>7</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Считаете ли Вы курс полезным для себя?</p>
+                    <div class="hstack   pb-2  ">
+                        <input type="radio" class="btn-check" name="P7" id="btnradioP7Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP7Y">Да</label>
+                        <input type="radio" class="btn-check" name="P7" id="btnradioP7N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP7N">Нет</label>
+
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P8---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>8</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Значимость курса для практической работы?</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P8" id="btnradioP8 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP8 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P9---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>9</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Соответствие курса Вашему уровню знаний</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P9" id="btnradioP9 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP9 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P10---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>10</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Содержание программы соответствует заявленной тематике</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P10" id="btnradioP10 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP10 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P11---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>11</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>
+                        Новизна материала курса (Содержание программы учитывает современные тенденции развития промышленности, последние изменения
+                        в нормативной документации...)
+                    </p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P11" id="btnradioP11 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP11 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P12---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>12</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Достаточность объема (количества) самостоятельных/практических задач и управжнений, их соответствие практической (производственной) работе</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P12" id="btnradioP12 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP12 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="header-h1 mt-4 ">
+                <h1>Оценка компетентности преподавательского состава</h1>
+            </div>
+
+
+            @*----------------------------------------P13---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>13</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>В какой степени Вы удовлетворены качеством преподавания?</p>
+
+                    <div class="d-flex  pb-2  flex-wrap ">
+                        @for (int i = 0; i < 11; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P13" id="btnradioP13 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-primary m-1 m-sm-2 " for="btnradioP13 @i">@i</label>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P14---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>14</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Уровень владения содержанием преподаваемой дисциплины</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P14[@s]" id="btnradioP14 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP14 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+            @*----------------------------------------P15---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>15</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Умение излагать материал ясно, последовательно, доступно</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P15[@s]" id="btnradioP15 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP15 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            @*----------------------------------------P16---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>16</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Умение мотивировать и поддерживать интерес обучающихся к теме</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P16[@s]" id="btnradioP16 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP16 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            @*----------------------------------------P17---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>17</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Уровень владения современными педагогическими технологиями</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P17[@s]" id="btnradioP17 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP17 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            @*----------------------------------------P18---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4   ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>18</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Уровень удовлетворенности отношением преподавателя к обучающимся (доброжелательность, вежливость, внимательность)</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P18[@s]" id="btnradioP18 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP18 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+            <div class="header-h1  mt-4">
+                <h1>Социальное доверие к организации</h1>
+            </div>
+            @*----------------------------------------P19---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>19</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Возможность взаимодействия с преподавателем по телефону, по электронной почте</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P19[@s]" id="btnradioP19 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP19 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            @*----------------------------------------P20---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>20</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <h5>Возможность взаимодействия с преподавателем в рамках индивидуальной работы (в т.ч. ответы на вопросы)</h5>
+
+
+                    @foreach (string s in (List<string>)ViewData["Teachers_in_template"])
+                    {
+                        <div class="hstack mt-2 mt-sm-1   align-items-baseline">
+
+                            <h6 class="fw-bold col-3 text-end">@s</h6>
+
+                            <div class="d-flex flex-wrap ms-3  ">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <input type="radio" class="btn-check" name="P20[@s]" id="btnradioP20 @s @i" autocomplete="off" value="@s-@i" required>
+                                    <label class="btn btn-sm btn-outline-success ms-1 py-0" for="btnradioP20 @s @i">@i</label>
+                                }
+                            </div>
+
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            @*----------------------------------------P21---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>21</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Рекомендуется ли курс?</p>
+                    <div class="hstack   pb-2 mb-1 ">
+                        <input type="radio" class="btn-check" name="P21" id="btnradioP21Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP21Y">Да</label>
+                        <input type="radio" class="btn-check" name="P21" id="btnradioP21N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP21N">Нет</label>
+
+                    </div>
+                    <div class="hstack  pb-2 align-items-lg-start ">
+                        <label for="FormControlTextarea1" class="form-label text-end  me-1 text-nowrap">Если нет, то почему:</label>
+                        <textarea class="form-control" id="FormControlTextarea1" rows="3" name="P21_remark" ></textarea>
+
+
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P22---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>22</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Если у Вас есть какие-то замечания, предложения и пожелания, просим Вас их записать</p>
+                    <textarea class="form-control" id="FormControlTextarea1" rows="3" name="P22"></textarea>
+
+                </div>
+            </div>
+
+            <div class="header-h1 mt-4 ">
+                <h1>ОЦЕНКА КУРСА</h1>
+            </div>
+
+            @*----------------------------------------P23---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>23</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2 mb-5">
+                    <h5>Оценка курса в целом</h5>
+
+                    <div class="d-inline-flex flex-wrap ms-3 my-4  justify-content-md-center ">
+                        <span>Слабо</span>
+                        @for (int i = 1; i < 7; i++)
+                        {
+                            <input type="radio" class="btn-check" name="P23" id="btnradioP23 @i" autocomplete="off" value="@i" required>
+                            <label class="btn btn-outline-danger ms-1 ms-md-4 py-0" for="btnradioP23 @i">@i</label>
+                        }
+                        <span class="ms-4">Отлично</span>
+                    </div>
+
+                    <label for="otziv" class="fw-bold">Отзыв о курсе обучения для размещения на сайте</label>
+                    <textarea class="form-control" id="otziv" rows="3" name="P23_remark"></textarea>
+
+                    <div class="form-check">
+                        <input class="form-check-input is-valid" type="checkbox" name="Agreement" value="true" id="Agreement" aria-describedby="AgreementFeedback">
+                        <input type="hidden" value="false" name="Agreement" />
+                        <label class="form-check-label" for="Agreement">
+                            С размещением отзыва на сайте согласен(а)
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            @*----------------------------------------Завершить---------------------------------------------------------------------------*@
+
+            @*Кнопка отправить*@
+            <div class="row justify-content-center m-5">
+                <button class="btn btn-lg btn-outline-success col-auto" type="submit">Отправить</button>
+            </div>
+        }
+
+    </div>
+</main>

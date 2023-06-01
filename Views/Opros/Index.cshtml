@@ -1,0 +1,225 @@
+﻿@model IEnumerable<Oprosnik.Models.Template>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+    <div class="container">
+        <header>
+            <div class="pricing-header p-3 pb-md-4 mx-auto text-center user-select-none">
+                <h1 class="display-4 fw-normal">Анкетирование</h1>
+                <p class="fs-5 text-muted">Самый быстрый способ получения обратной связи для дальнейшего улучшения учебных курсов!</p>
+            </div>
+        </header>
+
+        <main>
+            @*
+        @Html.ActionLink("Войти", "SignIn", null, new { @class = "btn btn-danger my-5" })
+
+            *@
+
+
+            <!--Сообщения-->
+            @if (@ViewData["message"].ToString() != "" && @ViewData["message"] != null)
+            {
+                <div class="alert alert-info mb-3 " role="alert">
+                    @ViewData["message"]
+                </div>
+            }
+
+            @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+
+            {
+                @*Админ панель <script src="~/Scripts/bootstrap.js" type="text/javascript"></script>
+            @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+            {<button type="button" class="btn-close  bg-danger" aria-label="Close"></button>}*@
+
+
+
+                @Scripts.Render(Url.Content("~/bundles/jquery"))
+                @Scripts.Render(Url.Content("~/bundles/bootstrap"))
+
+                @Scripts.Render(Url.Content("~/bundles/air-datepickerJS"))
+                @Styles.Render(Url.Content("~/Content/air-datepickerCSS"))
+                @Scripts.Render(Url.Content("~/bundles/ShowDialog"))
+
+
+
+
+                <div class="card user-select-none">
+
+                    <div class="card-body">
+                        <form method="get">
+                            <div class="hstack gap-2 align-items-baseline ">
+
+                                @Html.DropDownList("kurs", ViewBag.Kurses as SelectList, htmlAttributes: new { @class = "form-select form-select-sm mb-3 text-truncate" })
+
+
+                                <button type="submit" class="btn btn-primary ">Найти</button>
+                                <div class="vr"></div>
+                                @Html.ActionLink("Создать", "AddTemplate", null, new { @class = "btn btn-success showDialog1", data_bs_target = "#newTemplate", data_bs_toggle = "modal" })
+
+
+                            </div>
+
+                            <div class="hstack gap-2  flex-wrap  mb-3 m-xl-1 ">
+
+                                <label>Даты с</label>
+
+                                <input type="text" class="datepicker-here text-center border-0 border-bottom border-secondary col-sm-2 col-3 col-xl-1" data-auto-close="true" name="sdate" readonly value=@ViewBag.s_date />
+
+                                <label>по</label>
+                                <input type="text" class="datepicker-here text-center border-0 border-bottom border-secondary col-sm-2 col-3 col-xl-1" data-auto-close="true" name="edate" readonly value=@ViewBag.e_date />
+
+                                <div class="form-check form-switch d-flex justify-content-center ms-3 ">
+                                    <input class="form-check-input" type="checkbox" role="checkbox" id="flexSwitchCheckChecked" value="true" name="status" @(ViewBag.status ? "checked=checked" : "")>
+                                    <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Только активные</label>
+                                    <input type="hidden" value="false" name="status" />
+                                </div>
+
+
+
+                            </div>
+
+
+                        </form>
+                        <form method="get" class="row justify-content-center row-cols-auto ">
+                            <button type="submit" class="btn btn-outline-danger">Сброс</button>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            }
+
+
+            @if (Model.Count() == 0)
+            {
+                <h1 class="text-muted   mt-4  text-center   ">Список пуст</h1>
+            }
+
+            <!--Шаблоны анкет-->
+
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-5    ">
+
+
+                <!--начало цикла шаблонов-->
+                @{int i = 0;}
+                @foreach (var item in Model)
+                {
+                    <div class="col mb-4">
+
+                        <div class="card temp mb-4 rounded-3 user-select-none h-100  ">
+
+                            <div class="card-header py-3     ">
+
+                                <div class="hstack gap-3  ">
+                                    @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+
+                                    {
+                                        @* активировать*@
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input TemplateStatus" type="checkbox" value=@item.Id_template role="checkbox" id="status @item.Id_template" @(item.Status ? "checked=checked" : "")>
+                                        </div>
+                                    }
+
+
+                                    <h4 class="ms-auto mx-auto my-0 fw-normal  text-muted  ">Анкета №@{i = i + 1;}@i</h4>
+
+                                    @* Закрыть кнопка*@
+                                    @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+
+                                    {
+                                        @Html.ActionLink(" ", "DeleteTemplate", new { id_template = item.Id_template }, new { @class = "btn-close  bg-danger showDialog", data_bs_target = "#staticBackdrop", data_bs_toggle = "modal" })
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+                                <div class="vstack  h-100 ">
+
+                                    <div class="d-flex mb-3   h-100  align-items-center justify-content-center ">
+                                        <strong>
+                                            @item.Kurs_name
+                                        </strong>
+
+                                    </div>
+
+                                    <span class="mb-3 py-0 text-muted small fst-italic align-self-end  border-top border-secondary">обучение с @item.Sdate.ToString("d") по @item.Edate.ToString("d")</span>
+                                    @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+
+                                    {
+                                        @Html.ActionLink("Результат", "Result", new { id_template = item.Id_template }, new { @class = "w-100 btn btn-lg btn-outline-primary  " })
+
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Начать", "Anketa", new { id_template = item.Id_template }, new { @class = "w-100 btn btn-lg btn-outline-primary  " })
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    @if (Convert.ToBoolean(ViewData["isAdmin"]) == true)
+
+    {
+
+        @*     Модальное окно удаление  *@
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div id="dialogContent"></div>
+                </div>
+            </div>
+
+
+        </div>
+        @*    Модальное окно конец   *@
+
+        @*     Модальное окно Добавить новый шаблон  *@
+        <div class="modal fade " id="newTemplate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newTemplateLabel" aria-hidden="true">
+
+            <div class="text-center mt-1" id="spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Загрузка...</span>
+                </div>
+            </div>
+
+
+
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div id="dialogContent1"></div>
+                </div>
+            </div>
+
+
+        </div>
+        @*    Модальное окно конец   *@
+    }

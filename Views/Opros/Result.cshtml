@@ -1,0 +1,613 @@
+﻿@model  Oprosnik.Models.ResultViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .header-h1 {
+        position: relative;
+        margin-bottom: .5rem;
+    }
+
+        .header-h1 h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            padding-left: 3rem;
+            color: black;
+        }
+
+            .header-h1 h1::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 2.25rem;
+                height: 2.25rem;
+                background: black;
+            }
+
+            .header-h1 h1::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 2rem;
+                width: 100%;
+                height: .25rem;
+                background-color: black;
+            }
+</style>
+
+
+
+@*Общий фон*@
+<main class="container-fluid anketa  ">
+
+
+    @*Лист опросника*@
+    <div class="container  border border-dark  border-1 bg-body my-5  rounded-2 p-4 user-select-none">
+
+
+        <div class="hstack gap-3 mb-5">
+            @*Кнопка вернуться назад*@
+            @Html.ActionLink("Назад", "Index", new { status = true }, new { @class = "btn btn-outline-success align-self-start" })
+
+            <h2 class="ms-auto mx-auto my-0 fw-normal  text-dark  ">Результаты опроса </h2>
+            <p class="text-muted align-self-end">В анкетировании участвовало: <span class="text-danger" >@Model.TotalAnkets</span> анкет(-ы,-а)</p>
+
+        </div>
+
+
+        @*Хедер название курса и даты*@
+        <div class="row text-center mb-5 ">
+            <h1>@Model.Template.Kurs_name</h1>
+            <span class="py-0 text-muted fst-italic align-self-end">обучение с @Model.Template.Sdate.ToString("d") по  @Model.Template.Edate.ToString("d")</span>
+        </div>
+
+        @if (Model.TotalAnkets > 0)
+        {
+
+            <div class="header-h1  mt-4">
+                <h1>Оценка условий предоставления услуги</h1>
+            </div>
+
+            @*---------------------------------------P1----------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>1</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Правильность выбранного объема курса (оптимальность срока обучения)</p>
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P1</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1"> @Model.AvgP1.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P2---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>2</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Устраивает ли Вас форма обучения?</p>
+                    <div class="hstack   pb-2  ">
+                        <input type="radio" class="btn-check" name="P2" id="btnradioP2Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP2Y">Да</label>
+                        <label class="me-5">@Model.ProcP2["yes"]%</label>
+
+                        <input type="radio" class="btn-check" name="P2" id="btnradioP2N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP2N">Нет</label>
+                        <label>@Model.ProcP2["no"]%</label>
+
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P3---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>3</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Комфортность во время пребывания в помещениях МОРУЦ (интерьер, гaрдероб, места для ожидания, учебные кабинеты и т.п.)</p>
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P3</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP3.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P4---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto ">
+                    <h1>4</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Удовлетворенность качеством организации курсов (расписание, организация питания, оказание психолого-педагогической, медицинской помощи и т.п.)</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P4</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP4.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P5---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>5</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Обеспеченность учебного процесса мультимедиа и компьютерной техникой, программным обеспеченьем, тренажерами, учебно-методическими и раздаточными материалами</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P5</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP5.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="header-h1 mt-4 ">
+                <h1>Оценка содержания программы</h1>
+            </div>
+
+
+            @*----------------------------------------P6---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>6</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>На сколько оправдала учебная программа Ваши ожидания?</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P6</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP6.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P7---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>7</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Считаете ли Вы курс полезным для себя?</p>
+                    <div class="hstack   pb-2  ">
+                        <input type="radio" class="btn-check" name="P7" id="btnradioP7Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP7Y">Да</label>
+                        <label class="me-5">@Model.ProcP7["yes"]%</label>
+
+                        <input type="radio" class="btn-check" name="P7" id="btnradioP7N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP7N">Нет</label>
+                        <label>@Model.ProcP7["no"]%</label>
+
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P8---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>8</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Значимость курса для практической работы?</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P8</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP8.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P9---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>9</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Соответствие курса Вашему уровню знаний</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P9</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP9.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P10---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>10</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Содержание программы соответствует заявленной тематике</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P10</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP10.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P11---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>11</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>
+                        Новизна материала курса (Содержание программы учитывает современные тенденции развития промышленности, последние изменения
+                        в нормативной документации...)
+                    </p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P11</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP11.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P12---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>12</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Достаточность объема (количества) самостоятельных/практических задач и управжнений, их соответствие практической (производственной) работе</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P12</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP12.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="header-h1 mt-4 ">
+                <h1>Оценка компетентности преподавательского состава</h1>
+            </div>
+
+
+            @*----------------------------------------P13---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>13</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>В какой степени Вы удовлетворены качеством преподавания?</p>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P13</label>
+                        <h1 class="h-100 text-black text-center border border-success rounded-1 shadow col-1">@Model.AvgP13.ToString()</h1>
+                    </div>
+                </div>
+            </div>
+
+            @*----------------------------------------P14---------------------------------------------------------------------------*@
+    <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+        @*Номер вопроса*@
+        <div class="col-auto  ">
+            <h1>14</h1>
+        </div>
+
+        @*Текст вопроса и вариант ответа*@
+        <div class="col vstack gap-0 text-start fs-5 p-2  ">
+            <h5>Уровень владения содержанием преподаваемой дисциплины</h5>
+
+
+            @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+            {
+                <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                    <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                    <label class="text-muted mx-3  flex-fill ">@Model.P14[teacher]</label>
+                    <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP14[teacher].ToString()</h4>
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+            @*----------------------------------------P15---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>15</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Умение излагать материал ясно, последовательно, доступно</h5>
+
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P15[teacher]</label>
+                        <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP15[teacher].ToString()</h4>
+                    </div>
+                }
+
+
+
+            </div>
+            </div>
+            @*----------------------------------------P16---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>16</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Умение мотивировать и поддерживать интерес обучающихся к теме</h5>
+
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P16[teacher]</label>
+                        <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP16[teacher].ToString()</h4>
+                    </div>
+                }
+
+
+            </div>
+            </div>
+            @*----------------------------------------P17---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>17</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Уровень владения современными педагогическими технологиями</h5>
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P17[teacher]</label>
+                        <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP17[teacher].ToString()</h4>
+                    </div>
+                }
+
+
+            </div>
+            </div>
+            @*----------------------------------------P18---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4   ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>18</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Уровень удовлетворенности отношением преподавателя к обучающимся (доброжелательность, вежливость, внимательность)</h5>
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P18[teacher]</label>
+                        <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP18[teacher].ToString()</h4>
+                    </div>
+                }
+
+
+            </div>
+            </div>
+
+            <div class="header-h1  mt-4">
+                <h1>Социальное доверие к организации</h1>
+            </div>
+            @*----------------------------------------P19---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>19</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Возможность взаимодействия с преподавателем по телефону, по электронной почте</h5>
+
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P19[teacher]</label>
+                        <h5 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP19[teacher].ToString()</h5>
+                    </div>
+                }
+
+
+
+            </div>
+            </div>
+            @*----------------------------------------P20---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4  border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>20</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+            <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                <h5>Возможность взаимодействия с преподавателем в рамках индивидуальной работы (в т.ч. ответы на вопросы)</h5>
+                @foreach (string teacher in (List<string>)ViewData["Teachers_in_template"])
+                {
+                    <div class="d-flex flex-nowrap justify-content-between  align-items-baseline mt-1 ">
+                        <h6 class="fw-bold col-3 text-end">@teacher</h6>
+                        <label class="text-muted mx-3  flex-fill ">@Model.P20[teacher]</label>
+                        <h4 class="h-100 text-black text-center border border-primary rounded-1 shadow col-1"> @Model.AvgP20[teacher].ToString()</h4>
+                    </div>
+                }
+
+
+
+            </div>
+            </div>
+            @*----------------------------------------P21---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 border-bottom border-secondary border-2 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>21</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Рекомендуется ли курс?</p>
+                    <div class="hstack   pb-2 mb-1 ">
+                        <input type="radio" class="btn-check" name="P21" id="btnradioP21Y" autocomplete="off" value="true" required>
+                        <label class="btn btn-outline-success mx-4  " for="btnradioP21Y">Да</label>
+                        <label class="me-5">@Model.ProcP21["yes"]%</label>
+
+                        <input type="radio" class="btn-check" name="P21" id="btnradioP21N" autocomplete="off" value="false" required>
+                        <label class="btn btn-outline-danger  mx-4 " for="btnradioP21N">Нет</label>
+                        <label>@Model.ProcP21["no"]%</label>
+
+                    </div>
+                    <div class="hstack  pb-2 align-items-lg-start ">
+                        <label for="FormControlTextarea1" class="form-label text-end  me-1 text-nowrap">Если нет, то почему:</label>
+                        <textarea class="form-control text-start" id="FormControlTextarea1" rows="3" name="P21_remark" readonly>@Model.P21_remark</textarea>
+
+
+                    </div>
+                </div>
+            </div>
+            @*----------------------------------------P22---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4 ">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>22</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2  ">
+                    <p>Если у Вас есть какие-то замечания, предложения и пожелания, просим Вас их записать</p>
+                    <textarea class="form-control" id="FormControlTextarea1" rows="3" name="P22" readonly>@Model.P22</textarea>
+
+                </div>
+            </div>
+
+            <div class="header-h1 mt-4 ">
+                <h1>ОЦЕНКА КУРСА</h1>
+            </div>
+
+            @*----------------------------------------P23---------------------------------------------------------------------------*@
+            <div class="row row-cols-2 mx-4 mt-4">
+
+                @*Номер вопроса*@
+                <div class="col-auto  ">
+                    <h1>23</h1>
+                </div>
+
+                @*Текст вопроса и вариант ответа*@
+                <div class="col vstack gap-0 text-start fs-5 p-2 mb-5">
+                    <h5>Оценка курса в целом</h5>
+
+                    <div class="d-flex flex-nowrap justify-content-between   ">
+                        <label class="text-muted   flex-fill ">@Model.P23</label>
+                        <h1 class="h-100 text-black text-center border border-danger rounded-1 shadow col-1">@Model.AvgP23.ToString()</h1>
+                    </div>
+
+
+
+                    <label for="otziv" class="fw-bold">Отзыв о курсе обучения для размещения на сайте</label>
+                    <textarea class="form-control" id="otziv" rows="3" name="P23_remark" readonly>@Model.P23_remark</textarea>
+
+
+
+                </div>
+
+            </div>
+
+
+        }
+        else
+        {
+
+            <h1 class="text-muted   mt-4  text-center    ">Анкеты отсутствуют</h1>
+        }
+
+
+
+        @*----------------------------------------Завершить---------------------------------------------------------------------------*@
+
+        @*Кнопка отправить*@
+        <div class="row justify-content-center m-5">
+
+            @Html.ActionLink("Закрыть", "Index", null, new { @class = "btn btn-lg btn-outline-success col-auto " })
+        </div>
+        
+
+    </div>
+
+
+</main>

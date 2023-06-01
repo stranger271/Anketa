@@ -1,0 +1,12 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <main class="conatiner w-100 m-auto text-center">
+        <p class="fs-1 text-muted">Ваша анкета принята.<br> Благодарим за участие в опросе!</p>
+
+        @Html.ActionLink("Завершить", "Index", new { status = true }, new { @class = "mt-5  btn btn-lg btn-primary" })
+    </main>
